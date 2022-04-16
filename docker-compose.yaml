@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  postgres:
+    hostname: postgres
+    image: postgres:12
+    command: ["postgres", "-c", "log_statement=all"] # dev only
+    volumes:
+      - pg:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: schemas
+    ports:
+      - "5432:5432"
+  api:
+    hostname: schema-registry
+    build:
+      context: .
+      dockerfile: ./.dockerfiles/Dockerfile
+    command: uvicorn app.app:app --host=0.0.0.0 --port 8000 --reload --http h11 --loop uvloop --log-level info
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      DB_URL: postgres://postgres:postgres@postgres:5432/schemas
+    volumes:
+      - ./app:/app
+      - ./tests:/tests
+    ports:
+      - "8000:8000"
+
+volumes:
+  pg:
