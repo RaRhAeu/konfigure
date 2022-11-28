@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_PORT: 5432
-      POSTGRES_DB: schemas
+      POSTGRES_DB: configuration
     ports:
       - "5432:5432"
   api:
@@ -19,14 +19,15 @@ services:
     build:
       context: .
       dockerfile: ./.dockerfiles/Dockerfile
-    command: uvicorn app.app:app --host=0.0.0.0 --port 8000 --reload --http h11 --loop uvloop --log-level info
+    command: uvicorn app.asgi:app --host=0.0.0.0 --port 8000 --reload --http h11 --loop uvloop --log-level info
     restart: unless-stopped
     depends_on:
       - postgres
     environment:
-      DB_URL: postgres://postgres:postgres@postgres:5432/schemas
+      DB_URL: postgres://postgres:postgres@postgres:5432/configuration
     volumes:
       - ./app:/app
+      - ./migrations:/migrations
       - ./tests:/tests
     ports:
       - "8000:8000"

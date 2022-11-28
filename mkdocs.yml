@@ -1,0 +1,31 @@
+site_name: "Konfigure"
+site_description: "Konfigure - dynamic configuration management service"
+theme:
+  name: "material"
+  palette:
+  - scheme: default
+    primary: cyan
+    accent: teal
+    toggle:
+      icon: material/toggle-switch
+      name: Switch to dark mode
+  - scheme: slate
+    primary: cyan
+    accent: teal
+    toggle:
+      icon: material/toggle-switch-off-outline
+      name: Switch to light mode
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+repo_name: RaRhAeu/konfigure
+repo_url: https://github.com/RaRhAeu/konfigure
+edit_uri: ''
+nav:
+  - "Konfigure": index.md
+
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings
